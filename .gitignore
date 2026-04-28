@@ -1,0 +1,22 @@
+# Helm
+*.tgz
+charts/
+
+# Kubernetes secrets
+*-secret.yaml
+secrets.yaml
+
+# env
+.env
+*.pem
+*-key
+*.pub
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json

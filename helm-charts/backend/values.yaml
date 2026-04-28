@@ -1,0 +1,35 @@
+replicaCount: 2
+
+image:
+  repository: vladdisslav/todo-backend
+  tag: "v1.0.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 5000
+  targetPort: 5000
+
+resources:
+  requests:
+    cpu: "50m"
+    memory: "128Mi"
+  limits:
+    cpu: "200m"
+    memory: "256Mi"
+
+probes:
+  liveness:
+    path: /api
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  readiness:
+    path: /api
+    initialDelaySeconds: 10
+    periodSeconds: 5
+
+mysql:
+  host: "mysql"
+  database: "tododb"
+  user: "todouser"
+  password: ""

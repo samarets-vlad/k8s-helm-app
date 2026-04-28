@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "backend.fullname" . }}-post-install
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      initContainers:
+      - name: wait-for-backend
+        image: curlimages/curl:latest
+        command:
+        - sh
+        - -c
+        - |
+          echo "Waiting for backend..."
+          for i in $(seq 1 30); do
+            if curl -sf http://{{ include "backend.fullname" . }}:5000/api; then
+              echo "Backend is ready"
+              exit 0
+            fi
+            echo "Attempt $i failed, retrying..."
+            sleep 5
+          done
+          echo "Backend did not become ready" && exit 1
+      containers:
+      - name: seed
+        image: curlimages/curl:latest
+        command:
+        - sh
+        - -c
+        - |
+          curl -sf -X POST http://{{ include "backend.fullname" . }}:5000/api \
+            -H 'Content-Type: application/json' \
+            -d '{"task": "Welcome to Todo App!"}'
+      restartPolicy: Never
+  backoffLimit: 3

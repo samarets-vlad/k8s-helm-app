@@ -1,0 +1,5 @@
+mysql:
+  host: "mysql"
+  database: "tododb"
+  user: "todouser"
+  password: "YOUR_DB_PASSWORD"

@@ -1,5 +1,7 @@
 # k8s Helm App — Todo App on k3s
 
+> 🇺🇦 [Українська версія](README.uk.md)
+
 Full-stack **Todo application** deployed on a single-node **k3s** cluster using **Helm charts**.
 Demonstrates production DevOps practices: parameterised Helm packaging, TLS via cert-manager,
 observability stack (Prometheus + Grafana + Loki), automated backups, and Helm hooks.
